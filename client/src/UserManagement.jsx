@@ -4,8 +4,8 @@ const API_URL = 'http://localhost:5000/users';
 
 function UserForm({ onSave, editingUser, onCancel }) {
   const [form, setForm] = useState({
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     email: '',
     age: ''
   });
@@ -13,13 +13,13 @@ function UserForm({ onSave, editingUser, onCancel }) {
   useEffect(() => {
     if (editingUser) {
       setForm({
-        firstName: editingUser.firstName,
-        lastName: editingUser.lastName,
+        first_name: editingUser.first_name,
+        last_name: editingUser.last_name,
         email: editingUser.email,
         age: editingUser.age
       });
     } else {
-      setForm({ firstName: '', lastName: '', email: '', age: '' });
+      setForm({ first_name: '', last_name: '', email: '', age: '' });
     }
   }, [editingUser]);
 
@@ -30,7 +30,7 @@ function UserForm({ onSave, editingUser, onCancel }) {
   const handleSubmit = e => {
     e.preventDefault();
     onSave(form);
-    setForm({ firstName: '', lastName: '', email: '', age: '' });
+    setForm({ first_name: '', last_name: '', email: '', age: '' });
   };
 
   return (
@@ -38,9 +38,9 @@ function UserForm({ onSave, editingUser, onCancel }) {
       <div className="mb-2">
         <input
           className="border rounded px-2 py-1 w-full"
-          name="firstName"
+          name="first_name"
           placeholder="First Name"
-          value={form.firstName}
+          value={form.first_name}
           onChange={handleChange}
           required
         />
@@ -48,9 +48,9 @@ function UserForm({ onSave, editingUser, onCancel }) {
       <div className="mb-2">
         <input
           className="border rounded px-2 py-1 w-full"
-          name="lastName"
+          name="last_name"
           placeholder="Last Name"
-          value={form.lastName}
+          value={form.last_name}
           onChange={handleChange}
           required
         />
@@ -96,8 +96,8 @@ function UserTable({ users, onEdit, onDelete, onSort, sortBy, order }) {
     <table className="min-w-full bg-white rounded shadow mb-4">
       <thead>
         <tr>
-          <th className="p-2 cursor-pointer" onClick={() => onSort('firstName')}>First Name {sortBy === 'firstName' ? (order === 'asc' ? '▲' : '▼') : ''}</th>
-          <th className="p-2 cursor-pointer" onClick={() => onSort('lastName')}>Last Name {sortBy === 'lastName' ? (order === 'asc' ? '▲' : '▼') : ''}</th>
+          <th className="p-2 cursor-pointer" onClick={() => onSort('first_name')}>First Name {sortBy === 'first_name' ? (order === 'asc' ? '▲' : '▼') : ''}</th>
+          <th className="p-2 cursor-pointer" onClick={() => onSort('last_name')}>Last Name {sortBy === 'last_name' ? (order === 'asc' ? '▲' : '▼') : ''}</th>
           <th className="p-2 cursor-pointer" onClick={() => onSort('email')}>Email {sortBy === 'email' ? (order === 'asc' ? '▲' : '▼') : ''}</th>
           <th className="p-2 cursor-pointer" onClick={() => onSort('age')}>Age {sortBy === 'age' ? (order === 'asc' ? '▲' : '▼') : ''}</th>
           <th className="p-2">Actions</th>
@@ -105,14 +105,14 @@ function UserTable({ users, onEdit, onDelete, onSort, sortBy, order }) {
       </thead>
       <tbody>
         {users.map(user => (
-          <tr key={user._id} className="border-t">
-            <td className="p-2">{user.firstName}</td>
-            <td className="p-2">{user.lastName}</td>
+          <tr key={user.id} className="border-t">
+            <td className="p-2">{user.first_name}</td>
+            <td className="p-2">{user.last_name}</td>
             <td className="p-2">{user.email}</td>
             <td className="p-2">{user.age}</td>
             <td className="p-2 flex gap-2">
               <button className="bg-yellow-400 px-2 py-1 rounded" onClick={() => onEdit(user)}>Edit</button>
-              <button className="bg-red-500 text-white px-2 py-1 rounded" onClick={() => onDelete(user._id)}>Delete</button>
+              <button className="bg-red-500 text-white px-2 py-1 rounded" onClick={() => onDelete(user.id)}>Delete</button>
             </td>
           </tr>
         ))}
@@ -142,7 +142,7 @@ function UserSearch({ onSearch }) {
 export default function UserManagement() {
   const [users, setUsers] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
-  const [sortBy, setSortBy] = useState('firstName');
+  const [sortBy, setSortBy] = useState('first_name');
   const [order, setOrder] = useState('asc');
   const [search, setSearch] = useState('');
 
@@ -161,7 +161,7 @@ export default function UserManagement() {
 
   const handleSave = async (form) => {
     if (editingUser) {
-      await fetch(`${API_URL}/${editingUser._id}`, {
+      await fetch(`${API_URL}/${editingUser.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form)
@@ -178,8 +178,8 @@ export default function UserManagement() {
   };
 
   const handleDelete = async (id) => {
-    await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-    fetchUsers();
+  await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+  fetchUsers();
   };
 
   const handleSort = (field) => {
