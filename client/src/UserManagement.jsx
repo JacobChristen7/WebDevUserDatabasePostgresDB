@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 const API_URL = 'https://webdevuserdatabasepostgresdb.onrender.com/users';
+// const API_URL = 'http://localhost:5000/users'; for local hosting
 
 function UserForm({ onSave, editingUser, onCancel }) {
   const [form, setForm] = useState({

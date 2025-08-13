@@ -53,6 +53,19 @@ npm start
 ```
 - The React app will run on `http://localhost:3000`
 
+### Important: API URL for Local Development
+
+By default, the frontend is set to use the deployed backend on Render:
+
+```js
+const API_URL = 'https://webdevuserdatabasepostgresdb.onrender.com/users';
+```
+to run it locally use this instead
+
+```js
+const API_URL = 'http://localhost:5000/users';
+```
+
 ## Usage
 - Open `http://localhost:3000` in your browser.
 - Use the interface to manage users. All changes are saved to the Postgres database.
